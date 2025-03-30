@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>𝐏𝐚𝐭𝐫𝐢𝐜𝐤 || 𝐖𝐚𝐜𝐭𝐡 𝐋𝐢𝐬𝐭</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        video#background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        header .profil-video {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        header .profil-video video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        header h1 {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        .video-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px auto;
+            gap: 20px;
+            max-width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+        .video-item {
+            width: 95%; /* Lebar hampir penuh */
+            aspect-ratio: 19 / 6; /* Rasio 19:6 */
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        .video-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .video-item h3 {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 16px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .video-item button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .video-item button:hover {
+            background: #0056b3;
+        }
+        .video-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 3;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .video-popup video {
+            width: 80%;
+            max-width: 800px;
+            border-radius: 10px;
+        }
+        .video-popup .close-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .video-popup .close-btn:hover {
+            background: darkred;
+        }
+         .musik-container {
+            display: flex;
+            align-items: center;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .musik-container img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            animation: spin 10s linear infinite;
+            margin-right: 15px;
+        }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .musik-info {
+            flex: 1;
+        }
+        .musik-info h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-bar div {
+            height: 100%;
+            background: #007BFF;
+            width: 0%;
+            transition: width 0.2s ease;
+        }
+        .musik-controls {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .musik-controls button {
+            background: black;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .musik-controls button:hover {
+            background: #333;
+        }
+        .musik-controls span {
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .video-list-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+        }
+        .video-list-container img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        }
+        .video-list-container button {
+            background: black;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            font-size: 18px;
+            border-radius: 10px;
+            margin-top: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        }
+        .video-list-container button:hover {
+            background: #333;
+        }
+        .produk-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 1200px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .produk-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px;
+            width: 250px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .produk-item img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .produk-item h3 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .produk-item button {
+            background: black;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .produk-item button:hover {
+            background: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Video -->
+    <video id="background-video" autoplay loop muted>
+        <source src="background-video.mp4" type="video/mp4">
+        Browser Anda tidak mendukung video latar belakang.
+    </video>
+
+    <!-- Header -->
+    <header>
+        <div class="profil-video">
+            <video autoplay loop muted>
+                <source src="profil-video.mp4" type="video/mp4">
+                Browser Anda tidak mendukung video profil.
+            </video>
+          </div>
+        <h1>𝐏𝐚𝐭𝐫𝐢𝐜𝐤𝐀𝐥𝐰𝐚𝐲𝐬𝐒𝐨𝐥𝐨 ⚡︎︎</h1>
+      <p>welcome To Video List<p>
+    </header>
+     <!-- Pemutar Musik -->
+    <div class="musik-container">
+        <img src="PpMp3.jpg" alt="Foto Musik">
+        <div class="musik-info">
+            <h3 id="music-title">Musik Latar</h3>
+             <div class="progress-bar">
+              <div id="progress"></div>
+               </div>
+               <div class="musik-controls">
+                <span id="current-time">0:00</span>
+                <button id="play-pause">Play</button>
+                <button id="next-music">Next</button>
+            </div>
+        </div>
+    </div>
+    <!-- Buttons To Store-->
+ <div class="video-list-container">
+        <img src="[BgPrd].jpg" alt="Thumbnail Video">
+        <button onclick="window.location.href='Store.html'">View Product List</button>
+    </div>
+    
+    <!-- List Video -->
+    <div class="video-container">
+        <div class="video-item">
+            <img src="[1].jpg" alt="Video 1 Thumbnail">
+            <h3>Cara Pasang Bot Watsapp</h3>
+            <button onclick="playVideo('https://files.catbox.moe/hh7iix.mp4')">Watch Now</button>
+        </div>
+        <div class="video-item">
+            <img src="[2].jpg" alt="Video 2 Thumbnail">
+            <h3>Riview Sc Bug (Comingson!)</h3>
+            <button onclick="playVideo('https://link.vid')">Watch Now</button>
+        </div>
+    </div>
+
+    <!-- Video Popup -->
+    <div class="video-popup" id="video-popup">
+        <video id="popup-video" controls></video>
+        <button class="close-btn" onclick="closeVideo()">Back To List</button>
+    </div>
+ <audio id="background-music" loop>
+        <source id="music-source" src=".Feast - Nina.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung musik latar.
+ </audio>
+    <script>
+    const musicList = [
+            "surat cinta untuk starla.mp3",
+            "sampai akhir waktu Speed up.mp3",
+            "For Revenge X Stereo Wall - Jakarta Hari Ini (Official Video).mp3",
+            "Dendi Nata - Abadi X Quotes Dilan.mp3",
+            "Nadin Amizah - Taruh  ELLA JKT48 Cover at MnG.mp3",
+            "Vionita - dia masa lalumu aku masa depanmu.mp3",
+            "Neck Deep - December.mp3",
+            "John Denver - Take Me Home, Country Roads.mp3"
+        ];
+        const playPauseButton = document.getElementById('play-pause');
+        const nextButton = document.getElementById('next-music');
+        const music = document.getElementById('background-music');
+        const musicSource = document.getElementById('music-source');
+        const musicTitle = document.getElementById('music-title');
+        const progress = document.getElementById('progress');
+        const currentTime = document.getElementById('current-time');
+
+        let currentMusicIndex = 0;
+
+        function getMusicTitle(fileName) {
+            return fileName.replace('.mp3', '');
+        }
+
+        function updateProgress() {
+            const percent = (music.currentTime / music.duration) * 100;
+            progress.style.width = percent + '%';
+            currentTime.textContent = formatTime(music.currentTime);
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? '0' + secs : secs}`;
+        }
+
+        function playMusic(index) {
+            currentMusicIndex = index;
+            const selectedMusic = musicList[index];
+            musicSource.src = selectedMusic;
+            musicTitle.textContent = getMusicTitle(selectedMusic);
+            music.load();
+            music.play();
+        }
+
+        playPauseButton.addEventListener('click', () => {
+            if (music.paused) {
+                music.play();
+                playPauseButton.textContent = 'Pause';
+            } else {
+                music.pause();
+                playPauseButton.textContent = 'Play';
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            const nextIndex = (currentMusicIndex + 1) % musicList.length;
+            playMusic(nextIndex);
+        });
+
+        music.addEventListener('timeupdate', updateProgress);
+
+        // Memulai musik pertama kali saat halaman dimuat
+        window.onload = () => playMusic(0);
+        
+        function playVideo(url) {
+            const popup = document.getElementById('video-popup');
+            const video = document.getElementById('popup-video');
+            video.src = url;
+            popup.style.display = 'flex';
+            video.play();
+        }
+        function closeVideo() {
+            const popup = document.getElementById('video-popup');
+            const video = document.getElementById('popup-video');
+            video.pause();
+            video.src = '';
+            popup.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
